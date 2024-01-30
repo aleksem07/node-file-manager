@@ -1,1 +1,2 @@
-console.log('Hello, World!');
+import './welcome.js';
+import './app.js';
