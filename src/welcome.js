@@ -1,10 +1,10 @@
+import { userName } from './userName.js'
+
 const welcome = async () => {
-  const argv = process.argv.slice(2);
-  const names = argv.toString().split(/\,|username\=|--/).filter(item => item !== '');
-  const userName = names[1] ? names[1] : names[0];
+  const name = userName();
   
-  if (userName) {
-    process.stdout.write(`Welcome to the File Manager, ${userName.toString()}!`);
+  if (name) {
+    process.stdout.write(`Welcome to the File Manager, ${name.toString()}!`);
     process.stdout.write('\n')
   } else {
     process.stdout.write(`Welcome to the File Manager, Student1!`);
