@@ -17,5 +17,8 @@
     "url": "https://github.com/aleksem07/node-file-manager/issues"
   },
   "type": "module",
-  "homepage": "https://github.com/aleksem07/node-file-manager#readme"
+  "homepage": "https://github.com/aleksem07/node-file-manager#readme",
+  "engines": {
+    "node": "20.11.0"
+  }
 }
