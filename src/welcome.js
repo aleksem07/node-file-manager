@@ -1,4 +1,5 @@
-import { userName } from './userName.js'
+import { userName } from './util/user-name.js'
+import { WELCOME_MESSAGE } from './common/const.js';
 
 const welcome = async () => {
   const name = userName();
@@ -6,9 +7,8 @@ const welcome = async () => {
   if (name) {
     process.stdout.write(`Welcome to the File Manager, ${name.toString()}!\n`);
     process.stdout.write(`Press 'ctrl+c' or sent '.exit' command to exit\n`);
-    process.stdout.write(`Please, enter the command...\n`);
+    process.stdout.write(`${WELCOME_MESSAGE}\n`);
   } else {
-    process.stdout.write(`Welcome to the File Manager, Student1!\n`);
   }
 }
 
