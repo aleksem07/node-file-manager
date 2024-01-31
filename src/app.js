@@ -1,7 +1,6 @@
 import { COMMANDS, COMMANDS_RUN } from './common/commands.js';
 import readlinePromises from 'node:readline/promises';
 
-
 const stdin = process.stdin;
 const stdout = process.stdout;
 const rl = readlinePromises.createInterface({

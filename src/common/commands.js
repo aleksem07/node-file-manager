@@ -23,10 +23,10 @@ export const COMMANDS_RUN = {
 }
 
 export const COMMANDS_HELP = {
-  HELP: '.help',
-  EXIT: '.exit',
-  PWD: 'pwd',
-  HOME_DIR: 'homedir',
-  ERROR: '.error simulated new Error',
+  HELP: '.help -',
+  EXIT: '.exit -',
+  PWD: 'pwd -',
+  HOME_DIR: 'homedir -',
+  ERROR: '.error - simulated new Error',
 }
 
