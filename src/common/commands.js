@@ -8,7 +8,8 @@ export const COMMANDS = {
   HELP: '.help',
   EXIT: '.exit',
   PWD: 'pwd',
-  HOME_DIR: 'homedir' 
+  HOME_DIR: 'homedir' ,
+  ERROR: '.error',
 }
 
 export const COMMANDS_RUN = {
@@ -16,12 +17,16 @@ export const COMMANDS_RUN = {
   EXIT: () => exit(name),
   PWD: () => process.env.PWD,
   HOME_DIR: () => HOME_DIR,
+  ERROR: async () => {
+    throw new Error('This is a simulated error');
+  },
 }
 
-export const COMMANDS_DESC = {
+export const COMMANDS_HELP = {
   HELP: '.help',
   EXIT: '.exit',
   PWD: 'pwd',
-  HOME_DIR: 'homedir' 
+  HOME_DIR: 'homedir',
+  ERROR: '.error simulated new Error',
 }
 

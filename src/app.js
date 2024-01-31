@@ -1,5 +1,3 @@
-import './filesystem.js';
-
 import { COMMANDS, COMMANDS_RUN } from './common/commands.js';
 import readlinePromises from 'node:readline/promises';
 
@@ -12,26 +10,33 @@ const rl = readlinePromises.createInterface({
 })
 
 const runApp = async () => {
-    rl.on('line', (line) => {
-      const query = line.toString().trim();
-      const commandKeys = Object.keys(COMMANDS)
-      let commandMatched = false;
+  rl.on('line', async (line) => {
+    const query = line.toString().trim();
+    const commandKeys = Object.keys(COMMANDS)
 
-      commandKeys.find(key => {
-          if (query === COMMANDS[key]) {
-          stdout.write(`> ${COMMANDS_RUN[key]()}\n`)
-          commandMatched = true;
+    let commandMatched = false;
+
+    for (const key of commandKeys) {
+      if (query === COMMANDS[key]) {
+        try {
+          const result = await COMMANDS_RUN[key]();
+          stdout.write(`> ${result}\n`)
+        } catch (error) {
+          stdout.write(`> Error executing command: ${error.message}\n`);
         }
-      })
-
-      if(!commandMatched) {
-        stdout.write("> Please enter a valid command\n");
+        commandMatched = true;
+        break;
       }
-    })
+    }
 
-    rl.on('SIGINT', () => {
-      COMMANDS_RUN.EXIT();
-    })
+    if(!commandMatched) {
+      stdout.write("> Please enter a valid command\n");
+    }
+  });
+
+  rl.on('SIGINT', () => {
+    COMMANDS_RUN.EXIT();
+  })
 }
 
 runApp();
