@@ -16,17 +16,14 @@ const runApp = async () => {
     const commandKeys = Object.keys(COMMANDS)
     let commandMatched = false;
 
-    if (query === '') {
-      return console.log('Please, enter the command ');
-    }
-
     for (const key of commandKeys) {
       if (query === COMMANDS[key]) {
         try {
           const result = await COMMANDS_RUN[key]();
+          console.log('\x1b[35m \x1b[0m')
           stdout.write(`${result}\n`)
         } catch (error) {
-          stdout.write(`Error executing command: ${error.message}\n`);
+          stdout.write(`Invalid input: ${error.message}\n`);
         }
         commandMatched = true;
         break;
@@ -37,13 +34,15 @@ const runApp = async () => {
       try {
         await execAsync(query);
       } catch (error) {
-        stdout.write(`> Error executing command: ${error.message}\n`);
+        stdout.write(`\x1b[31mInvalid input: \x1b[0m${error.message}\n`);
       }
     }
-    rl.prompt('>');
+    console.log('\x1b[33m \x1b[1m')
+    rl.prompt(true);
   });
 
-  rl.prompt('>');
+  console.log('\x1b[33m \x1b[1m')
+  rl.prompt(true);
 
   rl.on('SIGINT', () => {
     COMMANDS_RUN.EXIT();
