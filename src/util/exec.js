@@ -2,7 +2,7 @@ import { exec } from 'node:child_process';
 
 export const execAsync = (command) => {
   return new Promise((resolve, reject) => {
-    exec(command, {cwd:"/home/aleksem07"}, (error, stdout) => {
+    exec(command, (error, stdout) => {
       if (error) console.error(`\x1b[31mInvalid input: \x1b[0m${error.message}`);
       try {
         resolve(stdout);

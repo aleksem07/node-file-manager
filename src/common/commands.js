@@ -9,7 +9,7 @@ export const COMMANDS = {
   ERROR: '.error',
   UP: 'up',
   CD: 'cd',
-  LS: 'ls',
+  // LS: 'ls',
   CAT: 'cat',
   ADD: 'add',
   RN: 'rn',
@@ -33,8 +33,8 @@ export const COMMANDS_RUN = {
   ERROR: async () => {
     throw new Error('This is a simulated error');
   },
-  UP: () => 'up из текущего каталога выше',
-  CD: () => 'cd path_to_directory',
+  CD: (path) => process.chdir(path),
+  UP: () => process.cwd() === HOME_DIR ? process.chdir(HOME_DIR) : process.chdir('..'),
   LS: (path) => `ls ${path}`,
   CAT: (path) => CAT(path),
   ADD: () => 'add path_to_file',

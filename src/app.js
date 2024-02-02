@@ -2,6 +2,7 @@ import { COMMANDS, COMMANDS_RUN } from './common/commands.js';
 import readlinePromises from 'node:readline/promises';
 import { execAsync } from './util/exec.js';
 import { getCurrentDir } from './util/current-dir.js';
+import { HOME_DIR } from './common/const.js';
 
 const stdin = process.stdin;
 const stdout = process.stdout;
@@ -11,8 +12,13 @@ const rl = readlinePromises.createInterface({
   terminal: true,
 })
 
+const startProjectPath = () => {
+  process.chdir(HOME_DIR);
+}
+startProjectPath();
+
 const addCursor = () => {
-  console.log(`\n${getCurrentDir()} \x1b[33m\nEnter the command...\x1b[1m`)
+  console.log(`\n${getCurrentDir(process.cwd())} \x1b[33m\nEnter the command...\x1b[1m`)
   rl.prompt(true);
 }
 
@@ -47,7 +53,7 @@ const runApp = async () => {
     }
     addCursor();
   });
-
+  
   addCursor();
 
   rl.on('SIGINT', () => {
