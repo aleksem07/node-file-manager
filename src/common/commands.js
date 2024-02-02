@@ -1,9 +1,6 @@
 import { exit } from '../util/exit.js';
 import { userName } from '../util/user-name.js';
-import { HOME_DIR, OSCPUS, EOL, USER_NAME_SYSTEM, ARCH } from './const.js';
-
-
-const name = userName();
+import { HOME_DIR, OSCPUS, EOL, USER_NAME_SYSTEM, ARCH, CAT } from './const.js';
 
 export const COMMANDS = {
   HELP: '.help',
@@ -31,15 +28,15 @@ export const COMMANDS = {
 
 export const COMMANDS_RUN = {
   HELP: () => 'run .help',
-  EXIT: () => exit(name),
+  EXIT: () => exit(userName()),
   PWD: () => process.env.PWD,
   ERROR: async () => {
     throw new Error('This is a simulated error');
   },
   UP: () => 'up из текущего каталога выше',
   CD: () => 'cd path_to_directory',
-  LS: () => 'ls',
-  CAT: () => 'cat path_to_file',
+  LS: (path) => `ls ${path}`,
+  CAT: (path) => CAT(path),
   ADD: () => 'add path_to_file',
   RN: () => 'rn path_to_file new_filename',
   CP: () => 'cp path_to_file path_to_new_directory',

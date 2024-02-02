@@ -19,13 +19,15 @@ const addCursor = () => {
 const runApp = async () => {
   rl.on('line', async (line) => {
     const query = line.toString().trim();
+    const queryKey = query.split(' ')[0];
+    const queryAdd = query.split(' ').slice(1).join(' ');
     const commandKeys = Object.keys(COMMANDS)
     let commandMatched = false;
 
     for (const key of commandKeys) {
-      if (query === COMMANDS[key]) {
+      if (queryKey === COMMANDS[key]) {
         try {
-          const result = await COMMANDS_RUN[key]();
+          const result = await COMMANDS_RUN[key](queryAdd || '');
           console.log('\x1b[35m \x1b[0m')
           stdout.write(`${result}\n`)
         } catch (error) {
