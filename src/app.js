@@ -25,8 +25,9 @@ const addCursor = () => {
 const runApp = async () => {
   rl.on('line', async (line) => {
     const query = line.toString().trim();
-    const queryKey = query.split(' ')[0];
+    let queryKey = query.split(' ')[0];
     const queryAdd = query.split(' ').slice(1).join(' ');
+    if (queryAdd.startsWith('--')) queryKey = query;
     const commandKeys = Object.keys(COMMANDS)
     let commandMatched = false;
 
