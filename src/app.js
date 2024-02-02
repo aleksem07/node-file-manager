@@ -1,6 +1,7 @@
 import { COMMANDS, COMMANDS_RUN } from './common/commands.js';
 import readlinePromises from 'node:readline/promises';
 import { execAsync } from './util/exec.js';
+import { getCurrentDir } from './util/current-dir.js';
 
 const stdin = process.stdin;
 const stdout = process.stdout;
@@ -9,6 +10,11 @@ const rl = readlinePromises.createInterface({
   output: stdout,
   terminal: true,
 })
+
+const addCursor = () => {
+  console.log(`\n${getCurrentDir()} \x1b[33m\nEnter the command...\x1b[1m`)
+  rl.prompt(true);
+}
 
 const runApp = async () => {
   rl.on('line', async (line) => {
@@ -37,12 +43,10 @@ const runApp = async () => {
         stdout.write(`\x1b[31mInvalid input: \x1b[0m${error.message}\n`);
       }
     }
-    console.log('\x1b[33m \x1b[1m')
-    rl.prompt(true);
+    addCursor();
   });
 
-  console.log('\x1b[33m \x1b[1m')
-  rl.prompt(true);
+  addCursor();
 
   rl.on('SIGINT', () => {
     COMMANDS_RUN.EXIT();
