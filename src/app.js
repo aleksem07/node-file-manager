@@ -1,17 +1,55 @@
-import { exit } from './exit.js';
+import { COMMANDS, COMMANDS_RUN } from './common/commands.js';
+import readlinePromises from 'node:readline/promises';
+import { execAsync } from './util/exec.js';
+import { getCurrentDir } from './util/current-dir.js';
 
 const stdin = process.stdin;
 const stdout = process.stdout;
+const rl = readlinePromises.createInterface({
+  input:  stdin,
+  output: stdout,
+  terminal: true,
+})
 
-const runApp = () => {
-  stdin.on('data', (data) => {
-    if (data.toString().trim() === '.exit') exit();
+const addCursor = () => {
+  console.log(`\n${getCurrentDir()} \x1b[33m\nEnter the command...\x1b[1m`)
+  rl.prompt(true);
+}
 
-    stdout.write(data);
-  })
+const runApp = async () => {
+  rl.on('line', async (line) => {
+    const query = line.toString().trim();
+    const commandKeys = Object.keys(COMMANDS)
+    let commandMatched = false;
 
-  process.on('SIGINT', () => {
-    exit();
+    for (const key of commandKeys) {
+      if (query === COMMANDS[key]) {
+        try {
+          const result = await COMMANDS_RUN[key]();
+          console.log('\x1b[35m \x1b[0m')
+          stdout.write(`${result}\n`)
+        } catch (error) {
+          stdout.write(`Invalid input: ${error.message}\n`);
+        }
+        commandMatched = true;
+        break;
+      }
+    }
+
+    if(!commandMatched) {
+      try {
+        await execAsync(query);
+      } catch (error) {
+        stdout.write(`\x1b[31mInvalid input: \x1b[0m${error.message}\n`);
+      }
+    }
+    addCursor();
+  });
+
+  addCursor();
+
+  rl.on('SIGINT', () => {
+    COMMANDS_RUN.EXIT();
   })
 }
 
