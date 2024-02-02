@@ -1,4 +1,4 @@
-import { userName } from './util/user-name.js'
+import { userName } from '../util/user-name.js'
 
 const welcome = async () => {
   const name = userName();

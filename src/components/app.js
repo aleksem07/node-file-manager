@@ -1,8 +1,8 @@
-import { COMMANDS, COMMANDS_RUN } from './common/commands.js';
+import { COMMANDS, COMMANDS_RUN } from '../common/commands.js';
 import readlinePromises from 'node:readline/promises';
-import { execAsync } from './util/exec.js';
-import { getCurrentDir } from './util/current-dir.js';
-import { HOME_DIR } from './common/const.js';
+import { execAsync } from '../util/exec.js';
+import { getCurrentDir } from '../util/current-dir.js';
+import { HOME_DIR } from '../common/const.js';
 
 const stdin = process.stdin;
 const stdout = process.stdout;

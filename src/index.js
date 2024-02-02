@@ -1,2 +1,2 @@
-import './welcome.js';
-import './app.js';
+import './components/welcome.js';
+import './components/app.js';
