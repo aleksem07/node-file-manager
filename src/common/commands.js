@@ -1,7 +1,6 @@
 import { exit } from '../util/exit.js';
 import { userName } from '../util/user-name.js';
-import { HOME_DIR, OSCPUS, EOL, USER_NAME_SYSTEM, ARCH, CAT, CD, UP, LS } from './const.js';
-import { getCurrentDir } from '../util/current-dir.js';
+import { HOME_DIR, OSCPUS, EOL, USER_NAME_SYSTEM, ARCH, CAT, CD, UP, LS, ADD, RM, RN } from './const.js';
 
 export const COMMANDS = {
   HELP: '.help',
@@ -38,11 +37,11 @@ export const COMMANDS_RUN = {
   UP: () => UP(),
   LS: (path) => path ? LS(path) : LS(process.cwd()),
   CAT: (path) => CAT(path),
-  ADD: () => 'add path_to_file',
-  RN: () => 'rn path_to_file new_filename',
+  ADD: (fileName) => ADD(fileName),
+  RN: (path) => RN(path),
   CP: () => 'cp path_to_file path_to_new_directory',
   MV: () => 'mv path_to_file path_to_new_directory',
-  RM: () => 'rm path_to_file',
+  RM: (path) => RM(path),
   OSEOL: () =>  EOL,
   OSCPUS: () =>  OSCPUS,
   OSHOMEDIR: () => HOME_DIR,
