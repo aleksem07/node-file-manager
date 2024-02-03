@@ -1,6 +1,7 @@
 import { exit } from '../util/exit.js';
 import { userName } from '../util/user-name.js';
-import { HOME_DIR, OSCPUS, EOL, USER_NAME_SYSTEM, ARCH, CAT } from './const.js';
+import { HOME_DIR, OSCPUS, EOL, USER_NAME_SYSTEM, ARCH, CAT, CD, UP, LS } from './const.js';
+import { getCurrentDir } from '../util/current-dir.js';
 
 export const COMMANDS = {
   HELP: '.help',
@@ -9,7 +10,7 @@ export const COMMANDS = {
   ERROR: '.error',
   UP: 'up',
   CD: 'cd',
-  // LS: 'ls',
+  LS: 'ls',
   CAT: 'cat',
   ADD: 'add',
   RN: 'rn',
@@ -33,9 +34,9 @@ export const COMMANDS_RUN = {
   ERROR: async () => {
     throw new Error('This is a simulated error');
   },
-  CD: (path) => process.chdir(path),
-  UP: () => process.cwd() === HOME_DIR ? process.chdir(HOME_DIR) : process.chdir('..'),
-  LS: (path) => `ls ${path}`,
+  CD: (path) => CD(path),
+  UP: () => UP(),
+  LS: (path) => path ? LS(path) : LS(process.cwd()),
   CAT: (path) => CAT(path),
   ADD: () => 'add path_to_file',
   RN: () => 'rn path_to_file new_filename',

@@ -21,3 +21,27 @@ export const CAT = async (path) => {
     throw err;
   }
 } 
+
+export const CD = (path) => {
+  process.chdir(path);
+  return 'Directory changed';
+}
+
+export const UP = () => {
+  if (process.cwd() === HOME_DIR) {
+    process.chdir(HOME_DIR);
+    return 'Already at home'  
+  }  else {
+    process.chdir('..');
+    return 'Directory changed';
+  }
+} 
+
+export const LS = async (path = process.cwd()) => {
+  try {
+    const files = await fs.promises.readdir(path);
+    return files.join('\n');
+  } catch (err) {
+    throw err;
+  }
+}
