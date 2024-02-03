@@ -1,6 +1,6 @@
 import os from 'os';
-import path from 'path';
-import fs, { createReadStream, createWriteStream } from 'fs';
+import path, { join, basename } from 'path';
+import fs, { createReadStream, createWriteStream, promises as fsPromises } from 'fs';
 
 export const MAIN_DIR = path.join(process.env.PWD, '/src');
 export const USER_NAME_SYSTEM = os.userInfo()['username'];
@@ -92,8 +92,11 @@ export const RN = (path) => {
 
 export const CP = (path) => {
   const [oldPath, newPath] = path.split(' ');
+  const fileName = basename(oldPath);
+  const destinationPath = join(newPath, fileName);
   const readStream = createReadStream(oldPath);
-  const writeStream = createWriteStream(newPath);
+  const writeStream = createWriteStream(destinationPath);
+
   readStream.pipe(writeStream);
 
   readStream.on('error', (err) => {
@@ -107,7 +110,17 @@ export const CP = (path) => {
   writeStream.on('finish', () => {
     console.log('File copied successfully');
   });
-  return ' ';
 };
 
-
+export const MV = async (path) => {
+  const [oldPath, newPath] = path.split(' ');
+  try {
+    const fileName = basename(oldPath);
+    const destinationPath = join(newPath, fileName);
+    
+    await fsPromises.rename(oldPath, destinationPath);
+  } catch (err) {
+    console.error(`Error moving file: ${err.message}`);
+    throw err;
+  }
+}

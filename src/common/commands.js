@@ -1,6 +1,6 @@
 import { exit } from '../util/exit.js';
 import { userName } from '../util/user-name.js';
-import { HOME_DIR, OSCPUS, EOL, USER_NAME_SYSTEM, ARCH, CAT, CD, UP, LS, ADD, RM, RN, CP } from './const.js';
+import { HOME_DIR, OSCPUS, EOL, USER_NAME_SYSTEM, ARCH, CAT, CD, UP, LS, ADD, RM, RN, CP, MV } from './const.js';
 
 export const COMMANDS = {
   HELP: '.help',
@@ -40,7 +40,7 @@ export const COMMANDS_RUN = {
   ADD: (fileName) => ADD(fileName),
   RN: (path) => RN(path),
   CP: (path) => CP(path),
-  MV: () => 'mv path_to_file path_to_new_directory',
+  MV: (path) => MV(path),
   RM: (path) => RM(path),
   OSEOL: () =>  EOL,
   OSCPUS: () =>  OSCPUS,
