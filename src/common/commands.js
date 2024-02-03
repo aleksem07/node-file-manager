@@ -1,6 +1,6 @@
 import { exit } from '../util/exit.js';
 import { userName } from '../util/user-name.js';
-import { HOME_DIR, OSCPUS, EOL, USER_NAME_SYSTEM, ARCH, CAT, CD, UP, LS, ADD, RM, RN, CP, MV } from './const.js';
+import { HOME_DIR, OSCPUS, EOL, USER_NAME_SYSTEM, ARCH, CAT, CD, UP, LS, ADD, RM, RN, CP, MV, COMPRESS, DECOMPRESS, HASH } from './const.js';
 
 export const COMMANDS = {
   HELP: '.help',
@@ -47,9 +47,9 @@ export const COMMANDS_RUN = {
   OSHOMEDIR: () => HOME_DIR,
   OSUSERNAME: () =>  USER_NAME_SYSTEM,
   OSARCHITECTURE: () =>  ARCH,
-  HASH: () =>  'hash path_to_file',
-  COMPRESS: () =>  'compress path_to_file path_to_destination',
-  DECOMPRESS: () =>  'decompress path_to_file path_to_destination',
+  HASH: (path) =>  HASH(path),
+  COMPRESS: (path) => COMPRESS(path),
+  DECOMPRESS: (path) => DECOMPRESS(path),
 }
 
 export const COMMANDS_HELP = {

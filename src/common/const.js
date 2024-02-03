@@ -1,6 +1,8 @@
 import os from 'os';
-import path, { join, basename } from 'path';
+import path, { join, extname, basename } from 'path';
 import fs, { createReadStream, createWriteStream, promises as fsPromises } from 'fs';
+import { createBrotliCompress, createBrotliDecompress } from 'zlib';
+import { createHash } from 'crypto';
 
 export const MAIN_DIR = path.join(process.env.PWD, '/src');
 export const USER_NAME_SYSTEM = os.userInfo()['username'];
@@ -120,7 +122,85 @@ export const MV = async (path) => {
     
     await fsPromises.rename(oldPath, destinationPath);
   } catch (err) {
-    console.error(`Error moving file: ${err.message}`);
+    throw err;
+  }
+}
+
+export const COMPRESS = async (path) => {
+  try {
+    const [sourcePath, destinationDirectory] = path.split(' ');
+    const fileName = basename(sourcePath, extname(sourcePath));
+    const destinationPath = join(destinationDirectory, `${fileName}.br`);
+
+    const readStream = createReadStream(sourcePath);
+    const writeStream = createWriteStream(destinationPath);
+    const brotliCompressStream = createBrotliCompress();
+
+    readStream.on('error', (err) => {
+      console.error(`Error reading file: ${err.message}`);
+      writeStream.end();
+    });
+
+    writeStream.on('error', (err) => {
+      console.error(`Error writing compressed file: ${err.message}`);
+    });
+
+    writeStream.on('finish', () => {
+      console.log('File compressed successfully');
+    });
+
+    await new Promise((resolve, reject) => {
+      readStream.pipe(brotliCompressStream).pipe(writeStream);
+      writeStream.on('finish', resolve);
+      writeStream.on('error', reject);
+    });
+
+  } catch (err) {
+    console.error(`Error compressing file: ${err.message}`);
+    throw err;
+  }
+};
+
+export const DECOMPRESS = async (path) => {
+  try {
+    const [sourcePath, destinationDirectory] = path.split(' ');
+    const fileName = basename(sourcePath, '.br');
+    const destinationPath = join(destinationDirectory, fileName);
+
+    const readStream = createReadStream(sourcePath);
+    const writeStream = createWriteStream(destinationPath);
+
+    readStream.on('error', (err) => {
+      console.error(`Error reading compressed file: ${err.message}`);
+      writeStream.end();
+    });
+
+    writeStream.on('error', (err) => {
+      console.error(`Error writing decompressed file: ${err.message}`);
+    });
+
+    writeStream.on('finish', () => {
+      console.log('File decompressed successfully');
+    });
+
+    await new Promise((resolve, reject) => {
+      readStream.pipe(createBrotliDecompress()).pipe(writeStream);
+      writeStream.on('finish', resolve);
+      writeStream.on('error', reject);
+    });
+
+  } catch (err) {
+    console.error(`Error decompressing file: ${err.message}`);
+    throw err;
+  }
+}
+
+export const HASH = async (path) => {
+  try {
+    const hash = createHash('sha256').update(await fsPromises.readFile(path)).digest('hex');
+    return hash;
+  } catch (err) {
+    console.error(`Error hashing file: ${err.message}`);
     throw err;
   }
 }
