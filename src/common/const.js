@@ -1,6 +1,6 @@
 import os from 'os';
 import path from 'path';
-import fs from 'fs';
+import fs, { createReadStream, createWriteStream } from 'fs';
 
 export const MAIN_DIR = path.join(process.env.PWD, '/src');
 export const USER_NAME_SYSTEM = os.userInfo()['username'];
@@ -89,3 +89,25 @@ export const RN = (path) => {
     'file renamed';
   }
 }
+
+export const CP = (path) => {
+  const [oldPath, newPath] = path.split(' ');
+  const readStream = createReadStream(oldPath);
+  const writeStream = createWriteStream(newPath);
+  readStream.pipe(writeStream);
+
+  readStream.on('error', (err) => {
+    console.error(`Error reading file: ${err.message}`);
+  });
+
+  writeStream.on('error', (err) => {
+    console.error(`Error writing file: ${err.message}`);
+  });
+
+  writeStream.on('finish', () => {
+    console.log('File copied successfully');
+  });
+  return ' ';
+};
+
+
