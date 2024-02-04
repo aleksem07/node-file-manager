@@ -3,7 +3,6 @@ import { userName } from '../util/user-name.js';
 import { HOME_DIR, OSCPUS, EOL, USER_NAME_SYSTEM, ARCH, CAT, CD, UP, LS, ADD, RM, RN, CP, MV, COMPRESS, DECOMPRESS, HASH } from './const.js';
 
 export const COMMANDS = {
-  HELP: '.help',
   EXIT: '.exit',
   PWD: 'pwd',
   ERROR: '.error',
@@ -27,7 +26,6 @@ export const COMMANDS = {
 }
 
 export const COMMANDS_RUN = {
-  HELP: () => 'run .help',
   EXIT: () => exit(userName()),
   PWD: () => process.env.PWD,
   ERROR: async () => {
@@ -51,12 +49,3 @@ export const COMMANDS_RUN = {
   COMPRESS: (path) => COMPRESS(path),
   DECOMPRESS: (path) => DECOMPRESS(path),
 }
-
-export const COMMANDS_HELP = {
-  HELP: '.help -',
-  EXIT: '.exit -',
-  PWD: 'pwd -',
-  HOME_DIR: 'homedir -',
-  ERROR: '.error - simulated new Error',
-}
-
