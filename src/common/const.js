@@ -46,10 +46,9 @@ export const LS = async (path = process.cwd()) => {
 
     console.log('\x1b[32m');
     console.table(fileList);
-    console.log('\x1b[0m');
     
     return '';
-    
+
   } catch (err) {
     throw err;
   }
