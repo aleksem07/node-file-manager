@@ -129,7 +129,7 @@ export const MV = async (path) => {
 export const COMPRESS = async (path) => {
   try {
     const [sourcePath, destinationDirectory] = path.split(' ');
-    const fileName = basename(sourcePath, extname(sourcePath));
+    const fileName = basename(sourcePath);
     const destinationPath = join(destinationDirectory, `${fileName}.br`);
 
     const readStream = createReadStream(sourcePath);
@@ -164,6 +164,8 @@ export const COMPRESS = async (path) => {
 export const DECOMPRESS = async (path) => {
   try {
     const [sourcePath, destinationDirectory] = path.split(' ');
+    const isBr = basename(sourcePath);
+    if (!isBr.endsWith('.br')) return 'Please, provide a .br file' 
     const fileName = basename(sourcePath, '.br');
     const destinationPath = join(destinationDirectory, fileName);
 
