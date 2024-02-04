@@ -1,5 +1,5 @@
 import os from 'os';
-import path, { join, extname, basename } from 'path';
+import path, { join, basename } from 'path';
 import fs, { createReadStream, createWriteStream, promises as fsPromises } from 'fs';
 import { createBrotliCompress, createBrotliDecompress } from 'zlib';
 import { createHash } from 'crypto';
@@ -42,11 +42,12 @@ export const UP = () => {
 export const LS = async (path = process.cwd()) => {
   try {
     const files = await fs.promises.readdir(path);
-    console.log(`\x1b[32mIndex:     Name:\x1b[0m`)
-    return files.map((file ,index) => {
-        console.log(`${index}         ${file}`)
-      
-    }).join('');
+    const fileList = files.map((file) => ({ Name: file }));
+
+    console.log('\x1b[32m');
+    console.table(fileList);
+    console.log('\x1b[0m');
+
   } catch (err) {
     throw err;
   }
@@ -156,7 +157,6 @@ export const COMPRESS = async (path) => {
     });
 
   } catch (err) {
-    console.error(`Error compressing file: ${err.message}`);
     throw err;
   }
 };
@@ -192,7 +192,6 @@ export const DECOMPRESS = async (path) => {
     });
 
   } catch (err) {
-    console.error(`Error decompressing file: ${err.message}`);
     throw err;
   }
 }
@@ -202,7 +201,6 @@ export const HASH = async (path) => {
     const hash = createHash('sha256').update(await fsPromises.readFile(path)).digest('hex');
     return hash;
   } catch (err) {
-    console.error(`Error hashing file: ${err.message}`);
     throw err;
   }
 }
